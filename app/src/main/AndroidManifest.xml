@@ -39,8 +39,12 @@
             android:parentActivityName=".UI.MainActivity" />
         <activity
             android:name=".UI.MainActivity"
+            android:exported="false"
+            android:label="Main Activity" />
+        <activity
+            android:name=".UI.PinLockActivity"
             android:exported="true"
-            android:label="Main Activity">
+            android:label="Vacation Planner">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
