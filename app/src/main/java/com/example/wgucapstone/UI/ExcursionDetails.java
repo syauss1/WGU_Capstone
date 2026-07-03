@@ -23,6 +23,7 @@ import com.example.wgucapstone.database.Repository;
 import com.example.wgucapstone.entities.Category;
 import com.example.wgucapstone.entities.Excursion;
 import com.example.wgucapstone.receivers.AlarmReceiver;
+import com.example.wgucapstone.util.DateRangeValidator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -189,32 +190,21 @@ public class ExcursionDetails extends AppCompatActivity {
             return false;
         }
 
-        sdf.setLenient(false);
-        Date excDate;
-        try {
-            excDate = sdf.parse(dateStr);
-        } catch (ParseException e) {
-            // B5c
+        // B5c
+        if (!DateRangeValidator.isValidDate(dateStr)) {
             Toast.makeText(this,
                     "Date must be in MM/dd/yyyy format.", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         // B5e — excursion date must fall within vacation start and end dates
-        if (!vacStartDate.isEmpty() && !vacEndDate.isEmpty()) {
-            try {
-                Date startDate = sdf.parse(vacStartDate);
-                Date endDate = sdf.parse(vacEndDate);
-                if (excDate.before(startDate) || excDate.after(endDate)) {
-                    Toast.makeText(this,
-                            "Excursion date must be within the vacation:\n"
-                                    + vacStartDate + " – " + vacEndDate,
-                            Toast.LENGTH_LONG).show();
-                    return false;
-                }
-            } catch (ParseException ignored) {
-                // vacation dates unavailable — skip range check
-            }
+        if (!vacStartDate.isEmpty() && !vacEndDate.isEmpty()
+                && !DateRangeValidator.isWithinRange(dateStr, vacStartDate, vacEndDate)) {
+            Toast.makeText(this,
+                    "Excursion date must be within the vacation:\n"
+                            + vacStartDate + " – " + vacEndDate,
+                    Toast.LENGTH_LONG).show();
+            return false;
         }
 
         return true;

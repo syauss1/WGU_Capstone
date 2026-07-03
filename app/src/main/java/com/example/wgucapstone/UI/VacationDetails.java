@@ -20,6 +20,7 @@ import com.example.wgucapstone.database.Repository;
 import com.example.wgucapstone.entities.Excursion;
 import com.example.wgucapstone.entities.Vacation;
 import com.example.wgucapstone.receivers.AlarmReceiver;
+import com.example.wgucapstone.util.DateRangeValidator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
@@ -152,23 +153,17 @@ public class VacationDetails extends AppCompatActivity {
             return false;
         }
 
-        sdf.setLenient(false);
-        Date startDate, endDate;
-        try {
-            startDate = sdf.parse(startStr);
-        } catch (ParseException e) {
+        if (!DateRangeValidator.isValidDate(startStr)) {
             Toast.makeText(this, "Start date must be MM/dd/yyyy.", Toast.LENGTH_SHORT).show();
             return false;
         }
-        try {
-            endDate = sdf.parse(endStr);
-        } catch (ParseException e) {
+        if (!DateRangeValidator.isValidDate(endStr)) {
             Toast.makeText(this, "End date must be MM/dd/yyyy.", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         // B3d
-        if (!endDate.after(startDate)) {
+        if (!DateRangeValidator.isEndAfterStart(startStr, endStr)) {
             Toast.makeText(this, "End date must be after start date.", Toast.LENGTH_SHORT).show();
             return false;
         }
