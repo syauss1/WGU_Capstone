@@ -51,6 +51,21 @@
             android:importantForAutofill="no"
             android:drawableEnd="@android:drawable/ic_menu_my_calendar" />
 
+        <!-- Excursion Category — options come from the database, not hardcoded,
+             so new categories can be added without touching app code. -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Category"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/excursionCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

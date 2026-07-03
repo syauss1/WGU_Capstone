@@ -1,6 +1,7 @@
 package com.example.wgucapstone.UI;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,18 +9,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wgucapstone.R;
 import com.example.wgucapstone.database.Repository;
+import com.example.wgucapstone.entities.Category;
 import com.example.wgucapstone.entities.Excursion;
 import com.example.wgucapstone.receivers.AlarmReceiver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +37,7 @@ public class ExcursionDetails extends AppCompatActivity {
     // ── UI ────────────────────────────────────────────────────────────────────
     private EditText editTitle;
     private EditText editDate;
+    private Spinner categorySpinner;
 
     // ── State ─────────────────────────────────────────────────────────────────
     private Repository repository;
@@ -37,6 +45,9 @@ public class ExcursionDetails extends AppCompatActivity {
     private int vacationID = -1;
     private String vacStartDate = "";
     private String vacEndDate = "";
+    private String pendingCategory = "";   // category to select once the spinner loads
+    private static final String ADD_CATEGORY_OPTION = "Add new category...";
+    private ArrayAdapter<String> categoryAdapter;
 
     private static final String DATE_FORMAT = "MM/dd/yyyy";
     private final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
@@ -53,6 +64,7 @@ public class ExcursionDetails extends AppCompatActivity {
         // ── Bind views — IDs match activity_excursion_details.xml ────────────
         editTitle = findViewById(R.id.excursionTitle);
         editDate = findViewById(R.id.excursionDate);
+        categorySpinner = findViewById(R.id.excursionCategory);
 
         repository = new Repository(getApplication());
 
@@ -74,9 +86,78 @@ public class ExcursionDetails extends AppCompatActivity {
             getSupportActionBar().setTitle("Edit Excursion");
             editTitle.setText(getIntent().getStringExtra("title"));
             editDate.setText(getIntent().getStringExtra("date"));
+            pendingCategory = getIntent().getStringExtra("category");
         } else {
             getSupportActionBar().setTitle("New Excursion");
         }
+
+        setupCategorySpinner();
+    }
+
+    // ── Category spinner (scalable design — options come from the database) ───
+
+    private void setupCategorySpinner() {
+        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(categoryAdapter);
+        refreshCategories(pendingCategory);
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (categoryAdapter.getItem(position).equals(ADD_CATEGORY_OPTION)) {
+                    promptForNewCategory();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
+
+    /** Reloads categories from the database and selects {@code categoryToSelect} if present. */
+    private void refreshCategories(String categoryToSelect) {
+        List<Category> categories = repository.getAllCategories();
+        List<String> names = new ArrayList<>();
+        for (Category c : categories) {
+            names.add(c.getName());
+        }
+        names.add(ADD_CATEGORY_OPTION);
+
+        categoryAdapter.clear();
+        categoryAdapter.addAll(names);
+        categoryAdapter.notifyDataSetChanged();
+
+        if (categoryToSelect != null) {
+            int index = names.indexOf(categoryToSelect);
+            if (index >= 0) categorySpinner.setSelection(index);
+        }
+    }
+
+    /** Shows a dialog to add a brand-new category — it's saved to the database
+     * so it becomes available to every excursion from then on, not just this one. */
+    private void promptForNewCategory() {
+        EditText input = new EditText(this);
+        input.setHint("New category name");
+
+        new AlertDialog.Builder(this)
+                .setTitle("Add Category")
+                .setView(input)
+                .setPositiveButton("Add", (dialog, which) -> {
+                    String name = input.getText().toString().trim();
+                    if (name.isEmpty()) {
+                        Toast.makeText(this, "Category name cannot be empty.", Toast.LENGTH_SHORT).show();
+                        refreshCategories(null);
+                        return;
+                    }
+                    repository.insertCategory(new Category(0, name));
+                    // Give the async insert a moment before re-querying (same pattern
+                    // used elsewhere in this app for insert-then-read).
+                    categorySpinner.postDelayed(() -> refreshCategories(name), 300);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> refreshCategories(null))
+                .setCancelable(false)
+                .show();
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
@@ -176,10 +257,11 @@ public class ExcursionDetails extends AppCompatActivity {
 
         String title = editTitle.getText().toString().trim();
         String dateStr = editDate.getText().toString().trim();
+        String category = selectedCategory();
 
         if (excursionID == -1) {
             // New excursion — insert then retrieve auto-generated ID
-            Excursion excursion = new Excursion(0, title, dateStr, vacationID);
+            Excursion excursion = new Excursion(0, title, dateStr, vacationID, category);
             repository.insert(excursion);
 
             try {
@@ -194,12 +276,20 @@ public class ExcursionDetails extends AppCompatActivity {
             Toast.makeText(this, "Excursion saved!", Toast.LENGTH_SHORT).show();
         } else {
             // Existing excursion — update
-            Excursion excursion = new Excursion(excursionID, title, dateStr, vacationID);
+            Excursion excursion = new Excursion(excursionID, title, dateStr, vacationID, category);
             repository.update(excursion);
             Toast.makeText(this, "Excursion updated!", Toast.LENGTH_SHORT).show();
         }
 
         getSupportActionBar().setTitle("Edit Excursion");
+    }
+
+    /** Returns the spinner's current selection, or null if nothing valid is picked yet. */
+    private String selectedCategory() {
+        Object selected = categorySpinner.getSelectedItem();
+        if (selected == null) return null;
+        String value = selected.toString();
+        return ADD_CATEGORY_OPTION.equals(value) ? null : value;
     }
 
     // ── Delete (B5b) ──────────────────────────────────────────────────────────
@@ -213,7 +303,7 @@ public class ExcursionDetails extends AppCompatActivity {
         String title = editTitle.getText().toString().trim();
         String dateStr = editDate.getText().toString().trim();
 
-        repository.delete(new Excursion(excursionID, title, dateStr, vacationID));
+        repository.delete(new Excursion(excursionID, title, dateStr, vacationID, selectedCategory()));
         Toast.makeText(this, "Excursion deleted.", Toast.LENGTH_SHORT).show();
         finish();
     }

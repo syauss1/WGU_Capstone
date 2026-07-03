@@ -37,6 +37,7 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
                 intent.putExtra("title",        current.getTitle());
                 intent.putExtra("date",         current.getDate());
                 intent.putExtra("vacID",        current.getVacationID());
+                intent.putExtra("category",     current.getCategory());
                 // Pass vacation date range so ExcursionDetails can validate (B5e)
                 intent.putExtra("vacStartDate", mVacStartDate);
                 intent.putExtra("vacEndDate",   mVacEndDate);
