@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TripWise Vacation Planner</title>
+<style>
+  :root {
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --text: #1a237e;
+    --muted: #546e7a;
+    --accent: #3f51b5;
+    --accent-dark: #303f9f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: #222;
+    line-height: 1.5;
+  }
+  header {
+    padding: 56px 20px 40px;
+    text-align: center;
+  }
+  header h1 {
+    color: var(--text);
+    font-size: 2.2rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  header p.tagline {
+    color: var(--accent);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+  .download-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+  }
+  .download-card h2 { margin-top: 0; color: var(--text); }
+  .btn {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 14px 36px;
+    border-radius: 30px;
+    font-size: 1.05rem;
+    transition: background 0.15s ease;
+  }
+  .btn:hover { background: var(--accent-dark); }
+  .btn-secondary {
+    display: inline-block;
+    margin-top: 14px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .btn-secondary:hover { text-decoration: underline; }
+  section { margin-bottom: 48px; }
+  section h2 {
+    color: var(--text);
+    border-bottom: 2px solid #e0e8f5;
+    padding-bottom: 8px;
+  }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .feature-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+  .feature-card h3 {
+    margin: 0 0 8px;
+    color: var(--accent);
+    font-size: 1rem;
+  }
+  .feature-card p { margin: 0; color: #444; font-size: 0.92rem; }
+  .screens {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 8px 0;
+  }
+  .screens img {
+    height: 420px;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+  }
+  .install-steps {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+  .install-steps ol { margin: 0; padding-left: 22px; }
+  .install-steps li { margin-bottom: 10px; }
+  footer {
+    text-align: center;
+    padding: 24px 20px 50px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  footer a { color: var(--accent); }
+  code {
+    background: #eceff8;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>TripWise Vacation Planner</h1>
+  <p class="tagline">Plan your perfect getaway</p>
+</header>
+
+<main>
+  <div class="download-card">
+    <h2>Download for Android</h2>
+    <p>Native Android app &middot; requires Android 8.0 (API 26) or newer</p>
+    <!-- TODO: replace href with the GitHub Release asset URL once created -->
+    <a class="btn" href="REPLACE_WITH_RELEASE_APK_URL" download>Download APK</a>
+    <br>
+    <a class="btn-secondary" href="https://github.com/syauss1/WGU_Capstone">View source on GitHub</a>
+  </div>
+
+  <section>
+    <h2>What it does</h2>
+    <p>
+      TripWise lets you plan vacations and organize the excursions that make up each trip in one place.
+      Create a vacation with a title, hotel, and start/end dates, attach as many excursions as you like,
+      and keep everything validated, searchable, and summarized in a single report &mdash; all stored
+      securely on your device.
+    </p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>Vacations &amp; Excursions</h3>
+        <p>Full create/edit/delete for vacations and their linked excursions, with date pickers that guarantee valid dates.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Search</h3>
+        <p>Live search across vacations by title or hotel, and a combined keyword search across the full Trip Report.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Database-driven categories</h3>
+        <p>Excursion categories come from the database, not hardcoded &mdash; add a new one right from the form.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Trip Report</h3>
+        <p>A titled, time-stamped report combining every vacation and excursion into one multi-column table.</p>
+      </div>
+      <div class="feature-card">
+        <h3>PIN lock</h3>
+        <p>App-entry PIN protected with a salted SHA-256 hash &mdash; the PIN itself is never stored.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Notifications</h3>
+        <p>Optional alerts for vacation start/end dates and excursion dates.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Screens</h2>
+    <div class="screens">
+      <img src="assets/home.png" alt="Home screen">
+      <img src="assets/vacation_list.png" alt="My Vacations list with search">
+      <img src="assets/trip_report.png" alt="Trip Report">
+    </div>
+  </section>
+
+  <section>
+    <h2>Installing the APK</h2>
+    <div class="install-steps">
+      <ol>
+        <li>Tap <strong>Download APK</strong> above on your Android device (or transfer the file to it).</li>
+        <li>Open the downloaded file. If prompted, allow your browser or file manager to <strong>install unknown apps</strong> for this one install &mdash; this is expected for an app installed outside the Play Store.</li>
+        <li>Tap <strong>Install</strong>, then open TripWise.</li>
+        <li>Create a PIN on first launch, and you're ready to plan your first trip.</li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Built with Java &amp; Android Room &middot; source at
+  <a href="https://github.com/syauss1/WGU_Capstone">github.com/syauss1/WGU_Capstone</a>
+</footer>
+
+</body>
+</html>
