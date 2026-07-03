@@ -1,4 +1,4 @@
-package com.example.d308vacationplanner;
+package com.example.wgucapstone;
 
 import org.junit.Test;
 

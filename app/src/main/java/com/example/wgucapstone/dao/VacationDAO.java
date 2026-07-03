@@ -1,4 +1,4 @@
-package com.example.d308vacationplanner.dao;
+package com.example.wgucapstone.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.d308vacationplanner.entities.Vacation;
+import com.example.wgucapstone.entities.Vacation;
 
 import java.util.List;
 

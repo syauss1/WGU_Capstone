@@ -1,4 +1,4 @@
-package com.example.d308vacationplanner.entities;
+package com.example.wgucapstone.entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

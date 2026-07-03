@@ -1,4 +1,4 @@
-package com.example.d308vacationplanner.UI;
+package com.example.wgucapstone.UI;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -15,11 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.d308vacationplanner.R;
-import com.example.d308vacationplanner.database.Repository;
-import com.example.d308vacationplanner.entities.Excursion;
-import com.example.d308vacationplanner.entities.Vacation;
-import com.example.d308vacationplanner.receivers.AlarmReceiver;
+import com.example.wgucapstone.R;
+import com.example.wgucapstone.database.Repository;
+import com.example.wgucapstone.entities.Excursion;
+import com.example.wgucapstone.entities.Vacation;
+import com.example.wgucapstone.receivers.AlarmReceiver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;

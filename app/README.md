@@ -76,7 +76,7 @@ https://gitlab.com/wgu-gitlab-environment/student-repos/syauss1/d308-mobile-appl
 ---
 Project Structure
 ```
-app/src/main/java/com/example/d308vacationplanner/
+app/src/main/java/com/example/wgucapstone/
 ├── UI/
 │   ├── MainActivity.java          -- Home screen
 │   ├── VacationList.java          -- List of all vacations

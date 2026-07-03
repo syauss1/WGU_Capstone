@@ -1,4 +1,4 @@
-package com.example.d308vacationplanner.UI;
+package com.example.wgucapstone.UI;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -13,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.d308vacationplanner.R;
+import com.example.wgucapstone.R;
 
 public class MainActivity extends AppCompatActivity {
 

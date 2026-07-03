@@ -1,4 +1,4 @@
-package com.example.d308vacationplanner.UI;
+package com.example.wgucapstone.UI;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.d308vacationplanner.R;
-import com.example.d308vacationplanner.entities.Excursion;
+import com.example.wgucapstone.R;
+import com.example.wgucapstone.entities.Excursion;
 
 import java.util.List;
 

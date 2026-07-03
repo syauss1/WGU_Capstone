@@ -1,4 +1,4 @@
-package com.example.d308vacationplanner.UI;
+package com.example.wgucapstone.UI;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -13,10 +13,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.d308vacationplanner.R;
-import com.example.d308vacationplanner.database.Repository;
-import com.example.d308vacationplanner.entities.Excursion;
-import com.example.d308vacationplanner.receivers.AlarmReceiver;
+import com.example.wgucapstone.R;
+import com.example.wgucapstone.database.Repository;
+import com.example.wgucapstone.entities.Excursion;
+import com.example.wgucapstone.receivers.AlarmReceiver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
