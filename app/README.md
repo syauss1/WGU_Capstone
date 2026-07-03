@@ -3,13 +3,19 @@ Purpose
 A native Android application that allows users to plan, organize, and track personal vacations and associated excursions. All data is stored locally on the device using the Room persistence library (SQLite). Users can manage vacation details, attach multiple excursions to each vacation, set date-based alerts, and share vacation information.
 ---
 How to Operate the Application
+PIN Lock
+On first launch, the app asks you to create a PIN (at least 4 digits) to protect your data. Only a salted SHA-256 hash of the PIN is stored — never the PIN itself.
+On every launch after that, you must enter the correct PIN before the Home Screen is reachable.
+---
 Home Screen
-Launch the app to land on the Home Screen.
+After unlocking, you land on the Home Screen.
 Tap "View My Vacations" to navigate to the vacation list.
+Tap "Trip Report" to open the combined search/report screen.
 ---
 Vacation List (B1a, B2, C)
 Displays all saved vacations as cards showing the title and date range.
-If no vacations exist, an empty-state message is shown.
+Search box at the top filters vacations live by title or hotel.
+If no vacations exist (or none match the search), an empty-state message is shown.
 Tap the floating action button (FAB / +) in the bottom-right corner to create a new vacation.
 Tap any vacation card to open its detail view.
 ---
@@ -42,6 +48,8 @@ This screen handles both creating and editing excursions.
 Field	Requirement covered
 Excursion Title	B4
 Excursion Date (tap to open date picker)	B4, B5c
+Category (dropdown, populated from the database)	Scalable design
+The category dropdown is loaded from the Category table rather than hardcoded. Selecting "Add new category..." opens a dialog that inserts a new row into the database — the new option is immediately available everywhere, with no code changes required.
 Actions available from the top menu (⋮):
 Menu item	What it does	Requirement
 Save	Inserts (new) or updates (existing) the excursion	B5b
@@ -65,6 +73,12 @@ From the Vacation Detail menu, select Share.
 The Android share sheet opens pre-populated with all vacation details including any linked excursions.
 You can share via SMS, email, clipboard, or any installed share target.
 ---
+Trip Report
+Accessed from the Home Screen ("Trip Report" button).
+Combines every vacation and excursion into one report, each row showing Type, Title, Date, and a Detail column (hotel for vacations, category + parent vacation for excursions).
+A search box filters the report by keyword across both types.
+The report header shows the report title and a "Generated: <date-time>" timestamp that refreshes every time the results change.
+---
 Android Version
 The signed APK targets and is deployed to Android 8.0 (API 26 / Oreo) and higher, as required by the project specification.
 `minSdkVersion`: 26
@@ -72,26 +86,39 @@ The signed APK targets and is deployed to Android 8.0 (API 26 / Oreo) and higher
 Tested on Android 8.0 emulator (API 26) and Android 14 (API 34)
 ---
 Git Repository
-https://gitlab.com/wgu-gitlab-environment/student-repos/syauss1/d308-mobile-application-development-android/-/tree/working_branch
+https://github.com/syauss1/WGU_Capstone
 ---
 Project Structure
 ```
 app/src/main/java/com/example/wgucapstone/
 ├── UI/
+│   ├── PinLockActivity.java       -- App-entry PIN lock (launcher activity)
 │   ├── MainActivity.java          -- Home screen
-│   ├── VacationList.java          -- List of all vacations
+│   ├── VacationList.java          -- List of all vacations, with search
 │   ├── VacationDetails.java       -- Add / edit / delete vacation
 │   ├── VacationAdapter.java       -- RecyclerView adapter for vacations
-│   ├── ExcursionDetails.java      -- Add / edit / delete excursion
-│   └── ExcursionAdapter.java      -- RecyclerView adapter for excursions
-├── database/
-│   ├── VacationDatabase.java      -- Room database singleton
-│   ├── VacationDAO.java           -- Data access object for vacations
+│   ├── ExcursionDetails.java      -- Add / edit / delete excursion, category spinner
+│   ├── ExcursionAdapter.java      -- RecyclerView adapter for excursions
+│   ├── TripReportActivity.java    -- Combined search + multi-column report screen
+│   └── ReportAdapter.java         -- RecyclerView adapter for the polymorphic report rows
+├── dao/
+│   ├── VacationDAO.java           -- Data access object for vacations (incl. search)
 │   ├── ExcursionDAO.java          -- Data access object for excursions
+│   └── CategoryDAO.java           -- Data access object for excursion categories
+├── database/
+│   ├── VacationDatabase.java      -- Room database singleton, seeds default categories
 │   └── Repository.java            -- Single data access point for all UI classes
 ├── entities/
 │   ├── Vacation.java              -- Room entity: vacationID, title, hotel, startDate, endDate
-│   └── Excursion.java             -- Room entity: excursionID, title, date, vacationID
+│   ├── Excursion.java             -- Room entity: excursionID, title, date, vacationID, category
+│   ├── Category.java              -- Room entity: categoryID, name
+│   ├── TripItem.java              -- Abstract base for the polymorphic Trip Report
+│   ├── VacationTripItem.java      -- TripItem wrapper around a Vacation
+│   └── ExcursionTripItem.java     -- TripItem wrapper around an Excursion
+├── security/
+│   └── PinHasher.java             -- Salted SHA-256 hashing for the PIN lock
+├── util/
+│   └── DateRangeValidator.java    -- Pure-Java date validation, unit tested
 └── receivers/
     └── AlarmReceiver.java         -- BroadcastReceiver that fires system notifications
 ```
