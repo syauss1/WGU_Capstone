@@ -123,21 +123,45 @@ app/src/main/java/com/example/wgucapstone/
     └── AlarmReceiver.java         -- BroadcastReceiver that fires system notifications
 ```
 ---
-Dependencies (app/build.gradle)
+Dependencies (app/build.gradle, versions managed in gradle/libs.versions.toml)
 ```gradle
 dependencies {
-    implementation "androidx.room:room-runtime:2.6.1"
-    annotationProcessor "androidx.room:room-compiler:2.6.1"
-    implementation 'com.google.android.material:material:1.11.0'
-    implementation 'androidx.recyclerview:recyclerview:1.3.2'
-    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation libs.activity.ktx
+    implementation libs.appcompat
+    implementation libs.constraintlayout
+    implementation libs.material
+    implementation libs.room.common.jvm
+    implementation libs.room.runtime
+    testImplementation libs.junit
+    androidTestImplementation libs.espresso.core
+    androidTestImplementation libs.ext.junit
+    annotationProcessor libs.room.compiler
 }
 ```
 ---
-Generating the Signed APK
-In Android Studio: Build → Generate Signed Bundle / APK
-Select APK → Next
-Choose or create a keystore file
-Fill in key alias, passwords, and validity
-Select release build variant → Create
-The signed APK is output to `app/release/app-release.apk`
+Building a Signed Release APK
+Release builds are signed via a Gradle `signingConfig` that reads credentials from `app/keystore.properties` — a file that is intentionally **not** committed to the repository (see `.gitignore`).
+
+To build one yourself:
+1. Generate a keystore (one time only):
+   ```
+   keytool -genkeypair -v -keystore app/tripwise-release.jks -alias tripwise -keyalg RSA -keysize 2048 -validity 10000
+   ```
+2. Create `app/keystore.properties` (same folder, also gitignored):
+   ```properties
+   storeFile=tripwise-release.jks
+   storePassword=<your store password>
+   keyAlias=tripwise
+   keyPassword=<your key password>
+   ```
+3. Build the release APK:
+   ```
+   ./gradlew assembleRelease
+   ```
+   Output: `app/build/outputs/apk/release/app-release.apk`
+
+If `app/keystore.properties` doesn't exist, the release build type simply omits `signingConfig` and Gradle produces an unsigned release APK — the project still compiles either way.
+
+Distribution: the current signed release is published as a GitHub Release and linked from the GitHub Pages project site.
+- Project site: https://syauss1.github.io/WGU_Capstone/
+- Latest APK: https://github.com/syauss1/WGU_Capstone/releases/latest
