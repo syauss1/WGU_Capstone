@@ -31,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        Button reportButton = findViewById(R.id.buttonReport);
+        reportButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TripReportActivity.class);
+            startActivity(intent);
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

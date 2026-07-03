@@ -82,6 +82,22 @@
         android:backgroundTint="#3F51B5"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/buttonReport"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Trip Report button -->
+    <Button
+        android:id="@+id/buttonReport"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:text="Trip Report"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        android:backgroundTint="#5C6BC0"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

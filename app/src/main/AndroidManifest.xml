@@ -18,6 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WGUCapstone">
         <activity
+            android:name=".UI.TripReportActivity"
+            android:label="Trip Report"
+            android:parentActivityName=".UI.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.ExcursionDetails"
             android:label="Excursion Details"
             android:parentActivityName=".UI.ExcursionDetails"
