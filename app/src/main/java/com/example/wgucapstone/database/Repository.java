@@ -26,6 +26,10 @@ public class Repository {
         return mVacationDAO.getAllVacations();
     }
 
+    public List<Vacation> searchVacations(String query) {
+        return mVacationDAO.searchVacations(query);
+    }
+
     public void insert(Vacation vacation) {
         VacationDatabase.databaseWriteExecutor.execute(() -> mVacationDAO.insert(vacation));
     }

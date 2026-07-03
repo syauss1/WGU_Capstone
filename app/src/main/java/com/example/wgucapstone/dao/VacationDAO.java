@@ -25,4 +25,8 @@ public interface VacationDAO {
 
     @Query("SELECT * FROM vacation ORDER BY vacationID ASC")
     List<Vacation> getAllVacations();
+
+    @Query("SELECT * FROM vacation WHERE title LIKE '%' || :query || '%' " +
+            "OR hotel LIKE '%' || :query || '%' ORDER BY vacationID ASC")
+    List<Vacation> searchVacations(String query);
 }

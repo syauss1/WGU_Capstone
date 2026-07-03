@@ -8,6 +8,22 @@
     android:background="#F0F4F8"
     tools:context=".UI.VacationList">
 
+    <!-- Search box — filters the vacation list by title or hotel as you type -->
+    <EditText
+        android:id="@+id/searchVacations"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:padding="12dp"
+        android:background="@android:drawable/editbox_background"
+        android:hint="Search vacations by title or hotel..."
+        android:inputType="text"
+        android:imeOptions="actionSearch"
+        android:maxLines="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- Empty state message shown when no vacations exist -->
     <TextView
         android:id="@+id/emptyView"
@@ -19,7 +35,7 @@
         android:textColor="#90A4AE"
         android:lineSpacingMultiplier="1.5"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchVacations"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -32,7 +48,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="80dp"
         android:clipToPadding="false"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchVacations"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
